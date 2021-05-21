@@ -5,9 +5,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 50px;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.notesList {
+  display: flex;
+}
+
+.addNoteBtn {
+  background: #BE003C;
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+  border-radius: 10px;
+  font-size: 50px;
+  color: #fff;
+}
+
+.noteThumbnail {
+  margin: 20px;
+  width: 300px;
+  height: 300px;
+  border: 1px #000 solid;
+  border-radius: 10px;
+  padding: 10px;
 }
