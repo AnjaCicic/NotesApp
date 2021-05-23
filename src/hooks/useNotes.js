@@ -15,7 +15,8 @@ Shopping list:
 * toilet paper`;
 
 const useNotes = () => {
-  const [notes, setNotes] = useState([])
+  const localNotes = JSON.parse(localStorage.getItem('notes'))
+  const [notes, setNotes] = useState(localNotes || [])
   const [details, setDetails] = useState(null)
 
   // add new note
@@ -26,6 +27,15 @@ const useNotes = () => {
     }
     setNotes([...notes, newNote])
     setDetails({ ...newNote, editing: true, edited: newNote.source })
+    localStorage.setItem('notes', JSON.stringify([...notes, newNote]))
+  }
+
+  // delete note at index
+  const remove = (id) => {
+    const newNotes = notes.filter(note => note.id !== id)
+    setNotes(newNotes)
+    setDetails(null)
+    localStorage.setItem('notes', JSON.stringify(newNotes))
   }
 
   const showDetails = id => {
@@ -40,20 +50,13 @@ const useNotes = () => {
     setDetails({ ...details, editing: true, edited })
   }
 
-  const cancelEditing = () => {
-    setDetails({ ...details, editing: false, edited: details.source })
-  }
-
   // update existing note
   const save = (id, note) => {
-    setNotes(notes.map(item => item.id === id ? { id, source: note } : item))
-    setDetails({ ...details, source: note, editing: false })
-  }
+    const newNotes = notes.map(item => item.id === id ? { id, source: note } : item)
 
-  // delete note at index
-  const remove = (id) => {
-    setNotes(notes.filter(note => note.id !== id))
-    setDetails(null)
+    setNotes(newNotes)
+    setDetails({ ...details, source: note, editing: false })
+    localStorage.setItem('notes', JSON.stringify(newNotes))
   }
 
   return {
@@ -65,7 +68,6 @@ const useNotes = () => {
     showDetails,
     hideDetails,
     edit,
-    cancelEditing,
   }
 }
 
