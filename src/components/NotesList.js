@@ -1,21 +1,25 @@
 import Button from 'react-bootstrap/Button'
+import ReactMarkdown from 'react-markdown'
 
 import { NotesConsumer } from '../context/NotesContext'
-import NoteThumbnail from './NoteThumbnail'
 
-function NotesList(props) {
+const NotesList = (props) => {
   return (
     <NotesConsumer>
-      {({ value: notes, add }) => (
+      {({ notes, add, showDetails }) => (
         <div className="notesList">
           <Button className="addNoteBtn" onClick={add}>+</Button>
           {notes && notes.length
-            ? notes.map((note, index) => <NoteThumbnail key={index} note={note} />)
+            ? notes.map(note => (
+              <div key={note.id} className="noteThumbnail" onClick={() => showDetails(note.id)}>
+                <ReactMarkdown>{note.source}</ReactMarkdown>
+              </div>
+            ))
             : null}
         </div>
       )}
     </NotesConsumer>
-  );
+  )
 }
 
 export default NotesList

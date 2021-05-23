@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { v4 } from 'uuid'
 
 const sampleMarkdown =
   `This is a note
@@ -14,34 +15,58 @@ Shopping list:
 * toilet paper`;
 
 const useNotes = () => {
-  const [value, setValue] = useState([])
+  const [notes, setNotes] = useState([])
+  const [details, setDetails] = useState(null)
 
   // add new note
   const add = () => {
     const newNote = {
-      id: 0,
+      id: v4(),
       source: sampleMarkdown,
-      editing: true,
     }
-    setValue([...value, newNote])
+    setNotes([...notes, newNote])
+    setDetails({ ...newNote, editing: true, edited: newNote.source })
+  }
+
+  const showDetails = id => {
+    setDetails(notes.find(note => note.id === id))
+  }
+
+  const hideDetails = () => {
+    setDetails(null)
+  }
+
+  const edit = edited => {
+    setDetails({ ...details, editing: true, edited })
+  }
+
+  const cancelEditing = () => {
+    setDetails({ ...details, editing: false, edited: details.source })
   }
 
   // update existing note
-  const update = (note) => {
-    setValue(value.map(item => item.editing ? note : item))
+  const save = (id, note) => {
+    setNotes(notes.map(item => item.id === id ? { id, source: note } : item))
+    setDetails({ ...details, source: note, editing: false })
   }
 
   // delete note at index
-  const remove = (index) => {
-    setValue(value.splice(index, 1))
+  const remove = (id) => {
+    setNotes(notes.filter(note => note.id !== id))
+    setDetails(null)
   }
 
   return {
-    value,
+    notes,
+    details,
     add,
-    update,
-    remove
+    save,
+    remove,
+    showDetails,
+    hideDetails,
+    edit,
+    cancelEditing,
   }
 }
 
-export default useNotes;
+export default useNotes
