@@ -1,59 +1,62 @@
+import { useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { FaArrowLeft, FaPen, FaTrash, FaSave } from 'react-icons/fa'
 
-import { NotesConsumer } from '../context/NotesContext'
+import { NotesContext } from '../context/NotesContext'
 
 const NoteDetails = () => {
-  const handleSourceChange = edit => e => edit(e.target.value)
-  const handleCloseModal = (note, hideDetails) => () => {
-    if (!note.editing || note.source === note.edited) {
-      hideDetails()
+  const { save, remove, selectNote, selected, editSelectedNote, editSelectedNoteSource } = useContext(NotesContext)
+
+  if (!selected || !selected.id) return null
+
+  const handleSourceChange = e => {console.log(e);editSelectedNoteSource(e.target.value)}
+  const handleCloseModal = () => {
+    if (window.confirm('Are you sure you want to exit edit mode?')) {
+      selectNote(null)
       return
     }
+  }
 
-    if(window.confirm('Are you sure you want to exit without saving?')){
-      hideDetails()
+  const handleDeleteNote = id => () => {
+    if (window.confirm('Are you sure you want to delete this note?')) {
+      remove(id)
+      selectNote(null)
     }
   }
-  const handleDeleteNote = (id, remove) => () => {
-    if(window.confirm('Are you sure you want to delete this note?')){
-      remove(id)
-    }
+
+  const handleSaveNote = id => () => {
+    save(id, selected.edited)
   }
 
   return (
-    <NotesConsumer>
-      {({ details: note, save, remove, edit, hideDetails }) => (
-        <Modal
-          className="noteDetails"
-          show={Boolean(note && note.id)}
-          backdrop="static"
-        >
-          <Modal.Header>
-            <div>
-              <FaArrowLeft onClick={handleCloseModal(note, hideDetails)} />
-            </div>
-            <div>
-              {note && note.editing
-                ? <FaSave onClick={() => save(note.id, note.edited)} />
-                : <FaPen onClick={() => edit(note.source)} />}
-              <FaTrash onClick={handleDeleteNote(note && note.id, remove)} />
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            {note && note.editing
-              ? <Form.Control as={'textarea'} value={note.edited} onChange={handleSourceChange(edit)} />
-              : (
-                <ReactMarkdown>
-                  {note && note.source ? note.source : ''}
-                </ReactMarkdown>
-              )}
-          </Modal.Body>
-        </Modal>
-      )}
-    </NotesConsumer>
+    <Modal
+      className="noteDetails"
+      show
+      backdrop="static"
+    >
+      <Modal.Header>
+        <div>
+          <FaArrowLeft onClick={handleCloseModal} />
+        </div>
+        <div>
+          {selected.editing
+            ? <FaSave onClick={handleSaveNote(selected.id)} />
+            : <FaPen onClick={editSelectedNote} />}
+          <FaTrash onClick={handleDeleteNote(selected.id)} />
+        </div>
+      </Modal.Header>
+      <Modal.Body>
+        {selected.editing
+          ? <Form.Control as={'textarea'} value={selected.edited} onChange={handleSourceChange} />
+          : (
+            <ReactMarkdown>
+              {selected.source}
+            </ReactMarkdown>
+          )}
+      </Modal.Body>
+    </Modal>
   )
 }
 

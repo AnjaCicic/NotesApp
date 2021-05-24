@@ -1,33 +1,33 @@
+import { useContext } from 'react'
 import Button from 'react-bootstrap/Button'
 import ReactMarkdown from 'react-markdown'
 import { FaPlus } from 'react-icons/fa'
 
-import { NotesConsumer } from '../context/NotesContext'
+import { NotesContext } from '../context/NotesContext'
 
 const NotesList = () => {
+  const { notes, add, selectNote } = useContext(NotesContext)
+  const handleNoteClick = id => () => selectNote(id)
+
   return (
-    <NotesConsumer>
-      {({ notes, add, showDetails }) => (
-        <div className="notesList">
-          <Button className="notesListCard addNoteBtn" onClick={add}>
-            <FaPlus />
-          </Button>
-          {notes && notes.length
-            ? notes.map(note => (
-              <div
-                key={note.id}
-                className="notesListCard noteThumbnail"
-                onClick={() => showDetails(note.id)}
-              >
-                <ReactMarkdown className="noteThumbnailContent">
-                  {note.source}
-                </ReactMarkdown>
-              </div>
-            ))
-            : null}
-        </div>
-      )}
-    </NotesConsumer>
+    <div className="notesList">
+      <Button className="notesListCard addNoteBtn" onClick={add}>
+        <FaPlus />
+      </Button>
+      {notes && notes.length
+        ? notes.map(note => (
+          <div
+            key={note.id}
+            className="notesListCard noteThumbnail"
+            onClick={handleNoteClick(note.id)}
+          >
+            <ReactMarkdown className="noteThumbnailContent">
+              {note.source}
+            </ReactMarkdown>
+          </div>
+        ))
+        : null}
+    </div>
   )
 }
 
