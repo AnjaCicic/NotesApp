@@ -44,7 +44,7 @@ const NoteDetails = () => {
           </Modal.Header>
           <Modal.Body>
             {note && note.editing
-              ? <Form.Control value={note.edited} as={'textarea'} onChange={handleSourceChange(edit)} />
+              ? <Form.Control as={'textarea'} value={note.edited} onChange={handleSourceChange(edit)} />
               : (
                 <ReactMarkdown>
                   {note && note.source ? note.source : ''}

@@ -19,7 +19,7 @@ const useNotes = () => {
   const [notes, setNotes] = useState(localNotes || [])
   const [details, setDetails] = useState(null)
 
-  // add new note
+  // add new predefined note
   const add = () => {
     const newNote = {
       id: v4(),
@@ -38,14 +38,17 @@ const useNotes = () => {
     localStorage.setItem('notes', JSON.stringify(newNotes))
   }
 
+  // open details modal
   const showDetails = id => {
     setDetails(notes.find(note => note.id === id))
   }
 
+  // close details modal
   const hideDetails = () => {
     setDetails(null)
   }
 
+  // handle note source edit
   const edit = edited => {
     setDetails({ ...details, editing: true, edited })
   }
