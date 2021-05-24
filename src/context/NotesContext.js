@@ -57,7 +57,10 @@ const useNotes = () => {
   }
 }
 
-const NotesContext = React.createContext()
+const NotesContext = React.createContext({
+  notes: [],
+  selected: null,
+})
 
 const NotesProvider = (props) => {
   const notes = useNotes()
