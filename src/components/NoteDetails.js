@@ -1,13 +1,12 @@
-import { useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { FaArrowLeft, FaPen, FaTrash, FaSave } from 'react-icons/fa'
 
-import { NotesContext } from '../context/NotesContext'
+import { useNotesContext } from '../context/NotesContext'
 
 const NoteDetails = () => {
-  const { save, remove, selectNote, selected, editSelectedNote, editSelectedNoteSource } = useContext(NotesContext)
+  const { save, remove, selectNote, selected, editSelectedNote, editSelectedNoteSource } = useNotesContext()
 
   if (!selected || !selected.id) return null
 

@@ -1,12 +1,11 @@
-import { useContext } from 'react'
 import Button from 'react-bootstrap/Button'
 import ReactMarkdown from 'react-markdown'
 import { FaPlus } from 'react-icons/fa'
 
-import { NotesContext } from '../context/NotesContext'
+import { useNotesContext } from '../context/NotesContext'
 
 const NotesList = () => {
-  const { notes, add, selectNote } = useContext(NotesContext)
+  const { notes, add, selectNote } = useNotesContext()
   const handleNoteClick = id => () => selectNote(id)
 
   return (

@@ -52,8 +52,7 @@ code {
 
 /***** note details *****/
 .noteDetails .modal-content {
-  height: 56vw;
-  width: 56vw;
+  height: 80vh;
 }
 
 .noteDetails .modal-content .modal-header {

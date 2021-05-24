@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { v4 } from 'uuid'
 
 import sampleMarkdown from '../constants/sampleMarkdown'
@@ -61,6 +61,16 @@ const NotesContext = React.createContext({
   notes: [],
   selected: null,
 })
+
+export const useNotesContext = () => {
+  const notesContext = useContext(NotesContext)
+
+  if (notesContext === null) {
+    throw new Error('No notes context!')
+  }
+
+  return notesContext
+}
 
 const NotesProvider = (props) => {
   const notes = useNotes()
