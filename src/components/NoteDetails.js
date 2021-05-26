@@ -12,7 +12,10 @@ const NoteDetails = () => {
 
   const handleSourceChange = e => editSelectedNoteSource(e.target.value)
   const handleCloseModal = () => {
-    if (window.confirm('Are you sure you want to exit edit mode?')) {
+    if (!selected.editing
+      || selected.source === selected.edited
+      || window.confirm('Are you sure you want to exit edit mode?')) {
+      console.log('no change')
       selectNote(null)
       return
     }
