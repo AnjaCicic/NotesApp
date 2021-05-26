@@ -23,9 +23,9 @@ const useNotes = () => {
     const newNote = {
       id: v4(),
       source: sampleMarkdown,
-      editing: true,
     }
     setNotes([...notes, newNote])
+    setSelected({ ...newNote, editing: true, edited: sampleMarkdown })
     localStorage.setItem('notes', JSON.stringify([...notes, newNote]))
   }
 
