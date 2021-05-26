@@ -1,16 +1,16 @@
-import ReactMarkdown from 'react-markdown'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { FaArrowLeft, FaPen, FaTrash, FaSave } from 'react-icons/fa'
 
 import { useNotesContext } from '../context/NotesContext'
+import NoteMarkdown from './NoteMarkdown'
 
 const NoteDetails = () => {
   const { save, remove, selectNote, selected, editSelectedNote, editSelectedNoteSource } = useNotesContext()
 
   if (!selected || !selected.id) return null
 
-  const handleSourceChange = e => {console.log(e);editSelectedNoteSource(e.target.value)}
+  const handleSourceChange = e => editSelectedNoteSource(e.target.value)
   const handleCloseModal = () => {
     if (window.confirm('Are you sure you want to exit edit mode?')) {
       selectNote(null)
@@ -49,11 +49,7 @@ const NoteDetails = () => {
       <Modal.Body>
         {selected.editing
           ? <Form.Control as={'textarea'} value={selected.edited} onChange={handleSourceChange} />
-          : (
-            <ReactMarkdown>
-              {selected.source}
-            </ReactMarkdown>
-          )}
+          : <NoteMarkdown source={selected.source} />}
       </Modal.Body>
     </Modal>
   )

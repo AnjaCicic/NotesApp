@@ -1,8 +1,8 @@
 import Button from 'react-bootstrap/Button'
-import ReactMarkdown from 'react-markdown'
 import { FaPlus } from 'react-icons/fa'
 
 import { useNotesContext } from '../context/NotesContext'
+import NoteMarkdown from './NoteMarkdown'
 
 const NotesList = () => {
   const { notes, add, selectNote } = useNotesContext()
@@ -20,9 +20,7 @@ const NotesList = () => {
             className="notesListCard noteThumbnail"
             onClick={handleNoteClick(note.id)}
           >
-            <ReactMarkdown className="noteThumbnailContent">
-              {note.source}
-            </ReactMarkdown>
+            <NoteMarkdown className="noteThumbnailContent" source={note.source} />
           </div>
         ))
         : null}
